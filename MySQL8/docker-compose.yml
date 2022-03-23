@@ -1,23 +1,32 @@
-version: "3.9"
+version: '3'
+
 services:
+  # MySQL
   db:
-    image: mysql/mysql-server:5.7
+    image: mysql:8.0
+    # M1 mac must specify platform
+    platform: linux/amd64
     restart: always
     command:
+      --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
       --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
     environment:
       TZ: Asia/Shanghai
-      MYSQL_DATABASE: 'db'
-      MYSQL_ROOT_PASSWORD: '123456'
-      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: db
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      # MYSQL_ROOT_HOST: '%'
+      # mysql8 不能设置 MYSQL_ROOT_HOST，要使用 root 登录可参见 mycustom.sql
+
     ports:
       - 3306:3306
     volumes:
       - ./.mysql-data/db:/var/lib/mysql
       - ./initial.sql:/docker-entrypoint-initdb.d/initial.sql
       - ./mycustom.cnf:/etc/mysql/conf.d/custom.cnf
+
 
   # phpadmin
   adminer:
