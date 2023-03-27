@@ -1,0 +1,72 @@
+# 运行nginx的用户
+user  root;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+	# 日志的格式
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+	
+	# 将所有的server定义，通过include指令包含进此http模块
+    include /etc/nginx/conf.d/*.conf;
+
+    # server {
+    #     listen       80;
+    #     server_name  redragon.local.cn;
+
+    #     location /CasServer/ {
+    #         proxy_set_header Host $host;
+    #         proxy_set_header X-Real-IP $remote_addr;
+    #         proxy_set_header X-Real-PORT $remote_port;
+    #         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_set_header X-Forwarded-Host $proxy_host;
+    #         proxy_set_header X-Forwarded-Port $proxy_port;
+    #         proxy_pass http://host.docker.internal:8080/CasServer/;
+    #     }
+
+    #     location / {
+    #         proxy_set_header Host $host;
+    #         proxy_set_header X-Real-IP $remote_addr;
+    #         proxy_set_header X-Real-PORT $remote_port;
+    #         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_set_header X-Forwarded-Host $proxy_host;
+    #         proxy_set_header X-Forwarded-Port $proxy_port;
+    #         proxy_pass http://host.docker.internal:18081/;
+    #     }
+
+
+    #     location / {
+    #         proxy_set_header Host $host;
+    #         proxy_set_header X-Real-IP $remote_addr;
+    #         proxy_set_header X-Real-PORT $remote_port;
+    #         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_set_header X-Forwarded-Host $proxy_host;
+    #         proxy_set_header X-Forwarded-Port $proxy_port;
+    #         proxy_pass http://host.docker.internal:13001/;
+    #     }
+
+    # }
+
+}

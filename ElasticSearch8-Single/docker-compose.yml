@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  jianghu_elasticsearch:
+    image: elasticsearch:8.6.2
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - .:/mnt
+      - ./plugins/jieba:/usr/share/elasticsearch/plugins/jieba
+      - ./plugins/jieba/dic/stopwords.txt:/usr/share/elasticsearch/config/stopwords/stopwords.txt
