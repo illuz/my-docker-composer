@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  hysteria:
+    image: tobyxdd/hysteria
+    container_name: hysteria
+    restart: always
+    ports:
+      - 0.0.0.0:48778:48778/udp
+    volumes:
+      - ./hysteria.json:/etc/hysteria.json
+      - ./cert.crt:/etc/cert.crt
+      - ./private.key:/etc/private.key
+    command: ["server", "--config", "/etc/hysteria.json"]

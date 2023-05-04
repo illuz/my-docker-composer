@@ -1,0 +1,14 @@
+{
+    "listen": ":48778",
+    "protocol": "udp",
+    "resolve_preference": "46",
+    "auth": {
+        "mode": "password",
+        "config": {
+            "password": "ed38c1"
+        }
+    },
+    "alpn": "h3",
+    "cert": "/etc/hysteria/cert.crt",
+    "key": "/etc/hysteria/private.key"
+}
