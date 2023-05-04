@@ -7,7 +7,7 @@ services:
     ports:
       - 0.0.0.0:48778:48778/udp
     volumes:
-      - ./hysteria.json:/etc/hysteria.json
-      - ./cert.crt:/etc/cert.crt
-      - ./private.key:/etc/private.key
-    command: ["server", "--config", "/etc/hysteria.json"]
+      - ./hysteria.json:/etc/hysteria/hysteria.json
+      - ./cert.crt:/etc/hysteria/cert.crt
+      - ./private.key:/etc/hysteria/private.key
+    command: ["server", "--config", "/etc/hysteria/hysteria.json"]
