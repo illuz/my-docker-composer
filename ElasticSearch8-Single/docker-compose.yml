@@ -1,16 +1,33 @@
 version: '3.3'
 services:
-  jianghu_elasticsearch:
-    image: elasticsearch:8.6.2
+  elasticsearch:
+    image: elasticsearch:${ELASTIC_VERSION}
     environment:
-      - node.name=es01
-      - cluster.name=es-docker-cluster
-      - discovery.type=single-node
-      - xpack.security.enabled=false
+      TZ: Asia/Shanghai
+      ES_JAVA_OPTS: -Xmx512m -Xms512m
+      # Bootstrap password.
+      # Used to initialize the keystore during the initial startup of
+      # Elasticsearch. Ignored on subsequent runs.
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
     ports:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - .:/mnt
+      # 配置
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
+      # 数据存储
+      - ./data:/usr/share/elasticsearch/data:z
+      # 分词插件
       - ./plugins/jieba:/usr/share/elasticsearch/plugins/jieba
       - ./plugins/jieba/dic/stopwords.txt:/usr/share/elasticsearch/config/stopwords/stopwords.txt
+    # elasticsearch browser
+  # dejavu:
+  #     image: appbaseio/dejavu:3.6.0
+  #     container_name: dejavu
+  #     ports:
+  #         - '1358:1358'
+  #     links:
+  #         - elasticsearch
