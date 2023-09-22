@@ -1,0 +1,20 @@
+version: '3'
+services:
+  monibuca:
+    image: langhuihui/monibuca:latest
+    ports:
+      # - 1935:1935
+      - 8080:8080
+      # - 8443:8443
+      # - 554:554
+      # - 58200:58200
+      # - 5060:5060/udp
+      # - 8000:8000/udp
+      # - 9000:9000
+    volumes:
+      - ./config.yaml:/opt/config.yaml
+      - ./.data/fatal:/opt/fatal
+      - ./.data/logs:/opt/logs
+      - ./.data/record:/opt/record
+      - ./.data/.m7s:/opt/.m7s
+    

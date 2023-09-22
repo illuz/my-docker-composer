@@ -1,0 +1,12 @@
+# 支持零配置启动，即无需填写配置默认启用所有的插件。
+# 只需要填写需要修改的配置项即可。不需要将所有的配置都填写进来！！。
+# 全局配置参考 https://m7s.live/guide/config.html
+# 插件配置参考各个插件的文档
+# 插件都有一个enable配置，如果为false则不启用该插件，默认为true即不需要配置。
+
+llhls:
+  enable: false
+hls:
+  enable: false
+monitor:
+  enable: false
