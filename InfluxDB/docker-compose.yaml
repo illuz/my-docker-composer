@@ -1,0 +1,30 @@
+services:
+  influxdb:
+    image: influxdb:2
+    container_name: influxdb_v2
+    ports:
+      - "33086:8086"
+    volumes:
+      # 数据持久化：将容器内的数据映射到当前目录下的 influxdb_data 文件夹
+      # 这样即使删除了容器，你的币种数据也不会丢
+      - ./influxdb_data:/var/lib/influxdb2
+      # 配置持久化（可选）
+      - ./influxdb_config:/etc/influxdb2
+    environment:
+      # --- 自动初始化设置 (免去浏览器手动配置) ---
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      
+      # 设置用户名和密码 (密码至少8位)
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=olXQX2o6lRll
+      
+      # 设置你的组织名 (Organization)
+      - DOCKER_INFLUXDB_INIT_ORG=ggq_org
+      
+      # 设置默认的存储桶 (Bucket)
+      - DOCKER_INFLUXDB_INIT_BUCKET=coin_data
+      
+      # 【非常重要】固定设置一个 Token
+      # 这样你就不用每次去网页里复制生成的随机 Token 了，直接在 Go 代码里写死这个
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=KZzZwsHYya1aAkS22gGxmlnSlHbggdYy
+    restart: unless-stopped
