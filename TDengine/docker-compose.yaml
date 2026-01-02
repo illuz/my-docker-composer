@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  taosd:
+    image: tdengine/tdengine:3.3.6.13
+    container_name: tdengine
+    hostname: tdengine-server
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai       # 设置时区
+      - TAOS_FIRST_EP=tdengine-server:6030 # 设置第一个 End Point，与 hostname 保持一致
+    ports:
+      - "6030:6030"  # 客户端连接端口 (原生连接)
+      - "6041:6041"  # REST API 端口 (taosAdapter)
+      - "6042:6042"  # taosAdapter 监控端口 (可选)
+    volumes:
+      - ./data:/var/lib/taos   # 数据持久化目录
+      - ./log:/var/log/taos    # 日志目录
+      # - ./taos.cfg:/etc/taos/taos.cfg # (可选) 如果需要自定义配置文件，取消注释并创建文件
+    cap_add:
+      - SYS_NICE     # 某些高性能场景可能需要
